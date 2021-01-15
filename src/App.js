@@ -19,7 +19,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import ClearIcon from "@material-ui/icons/Clear";
 
 export default function App() {
-  const players = ["Luca", "Cyrus", "Ravi", "Henry"];
+  const players = ["Pierrik", "Hanne", "Bjorn", "Finn"];
   const [scores, setScores] = useState([]);
 
   const [newScores, setNewScores] = useState(players.map((name) => null));
