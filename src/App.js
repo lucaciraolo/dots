@@ -19,8 +19,10 @@ import SaveIcon from "@material-ui/icons/Save";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ClearIcon from "@material-ui/icons/Clear";
 import { useStickyState } from "./hooks/useStickyState";
+import { ConfirmDialog } from "./ConfirmDialog";
 
 export default function App() {
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [players, setPlayers] = useStickyState(
     ["Hugo", "Luca", "Cyrus", "Henry"],
     "players"
@@ -50,6 +52,16 @@ export default function App() {
 
   return (
     <Container maxWidth="sm">
+      <ConfirmDialog
+        open={confirmDialogOpen}
+        setOpen={setConfirmDialogOpen}
+        confirmHandler={() => {
+          setRounds([]);
+          setScoreEntry(false);
+          setNewScores(players.map((name) => null));
+          setConfirmDialogOpen(false);
+        }}
+      />
       <Grid container direction="column" justify="space-between">
         <Grid item>
           <TableContainer component={Paper}>
@@ -133,9 +145,7 @@ export default function App() {
               size="medium"
               style={{ marginTop: 20 }}
               onClick={() => {
-                setRounds([]);
-                setScoreEntry(false);
-                setNewScores(players.map((name) => null));
+                setConfirmDialogOpen(true);
               }}
             >
               <DeleteForeverIcon />
