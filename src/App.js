@@ -16,6 +16,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ClearIcon from "@material-ui/icons/Clear";
 import { useStickyState } from "./hooks/useStickyState";
 
@@ -23,8 +24,11 @@ export default function App() {
   const players = ["Hugo", "Luca", "Cyrus", "Ravi", "Henry"];
   const [rounds, setRounds] = useStickyState([], "rounds");
 
-  const [newScores, setNewScores] = useState(players.map((name) => null));
-  const [scoreEntry, setScoreEntry] = useState(false);
+  const [newScores, setNewScores] = useStickyState(
+    players.map((name) => null),
+    "newScores"
+  );
+  const [scoreEntry, setScoreEntry] = useStickyState(false, "scoreEntry");
 
   const [totals, setTotals] = useStickyState(
     players.map((name) => 0),
@@ -43,7 +47,7 @@ export default function App() {
 
   return (
     <Container maxWidth="sm">
-      <Grid container direction="column">
+      <Grid container direction="column" justify="space-between">
         <Grid item>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
@@ -56,14 +60,21 @@ export default function App() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rounds.map((round, roundNumber) => (
-                  <TableRow key={roundNumber}>
-                    <TableCell>#{roundNumber + 1}</TableCell>
-                    {round.map((score) => (
-                      <TableCell>{score}</TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+                {rounds.map((round, roundNumber) => {
+                  const worstScore = Math.max(...round);
+                  return (
+                    <TableRow key={roundNumber}>
+                      <TableCell>#{roundNumber + 1}</TableCell>
+                      {round.map((score) => {
+                        const style = {};
+                        if (score === worstScore) {
+                          style["color"] = "red";
+                        }
+                        return <TableCell style={style}>{score}</TableCell>;
+                      })}
+                    </TableRow>
+                  );
+                })}
 
                 {scoreEntry && (
                   <TableRow>
@@ -112,22 +123,38 @@ export default function App() {
             </Table>
           </TableContainer>
         </Grid>
-        <Grid item container justify="flex-end">
-          <Fab
-            color={scoreEntry ? "secondary" : "primary"}
-            size="medium"
-            style={{ marginTop: 20 }}
-            onClick={() => {
-              if (!scoreEntry) {
-                setScoreEntry(true);
-              } else {
-                setNewScores(players.map((name) => null));
+        <Grid item container justify="space-between">
+          <Grid item>
+            <Fab
+              color={"secondary"}
+              size="medium"
+              style={{ marginTop: 20 }}
+              onClick={() => {
+                setRounds([]);
                 setScoreEntry(false);
-              }
-            }}
-          >
-            {scoreEntry ? <ClearIcon /> : <AddIcon />}
-          </Fab>
+                setNewScores(players.map((name) => null));
+              }}
+            >
+              <DeleteForeverIcon />
+            </Fab>
+          </Grid>
+          <Grid item>
+            <Fab
+              color={scoreEntry ? "secondary" : "primary"}
+              size="medium"
+              style={{ marginTop: 20 }}
+              onClick={() => {
+                if (!scoreEntry) {
+                  setScoreEntry(true);
+                } else {
+                  setNewScores(players.map((name) => null));
+                  setScoreEntry(false);
+                }
+              }}
+            >
+              {scoreEntry ? <ClearIcon /> : <AddIcon />}
+            </Fab>
+          </Grid>
         </Grid>
       </Grid>
     </Container>
