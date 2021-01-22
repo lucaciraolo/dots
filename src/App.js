@@ -17,25 +17,29 @@ import {
 } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import ClearIcon from "@material-ui/icons/Clear";
+import { useStickyState } from "./hooks/useStickyState";
 
 export default function App() {
   const players = ["Hugo", "Luca", "Cyrus", "Ravi", "Henry"];
-  const [scores, setScores] = useState([]);
+  const [rounds, setRounds] = useStickyState([], "rounds");
 
   const [newScores, setNewScores] = useState(players.map((name) => null));
   const [scoreEntry, setScoreEntry] = useState(false);
 
-  const [totals, setTotals] = useState(players.map((name) => 0));
+  const [totals, setTotals] = useStickyState(
+    players.map((name) => 0),
+    "totals"
+  );
   useEffect(() => {
     const sums = players.map((name) => 0);
-    scores.forEach((round) => {
+    rounds.forEach((round) => {
       round.forEach((score, index) => {
         sums[index] += score;
       });
     });
     setTotals(sums);
     return () => {};
-  }, [scores]);
+  }, [rounds]);
 
   return (
     <Container maxWidth="sm">
@@ -52,10 +56,10 @@ export default function App() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {scores.map((row, roundNumber) => (
+                {rounds.map((round, roundNumber) => (
                   <TableRow key={roundNumber}>
                     <TableCell>#{roundNumber + 1}</TableCell>
-                    {row.map((score) => (
+                    {round.map((score) => (
                       <TableCell>{score}</TableCell>
                     ))}
                   </TableRow>
@@ -68,7 +72,7 @@ export default function App() {
                         style={{ color: "green" }}
                         onClick={() => {
                           if (!newScores.includes(null)) {
-                            setScores([...scores, newScores]);
+                            setRounds([...rounds, newScores]);
                             setNewScores(players.map((name) => null));
                             setScoreEntry(false);
                           }
@@ -94,7 +98,7 @@ export default function App() {
                     ))}
                   </TableRow>
                 )}
-                {scores.length > 0 && (
+                {rounds.length > 0 && (
                   <TableRow style={{ borderTop: "3px double black" }}>
                     <TableCell style={{ fontWeight: "bold" }}>Totals</TableCell>
                     {totals.map((score) => (
