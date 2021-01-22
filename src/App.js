@@ -21,7 +21,10 @@ import ClearIcon from "@material-ui/icons/Clear";
 import { useStickyState } from "./hooks/useStickyState";
 
 export default function App() {
-  const players = ["Hugo", "Luca", "Cyrus", "Ravi", "Henry"];
+  const [players, setPlayers] = useStickyState(
+    ["Hugo", "Luca", "Cyrus", "Henry"],
+    "players"
+  );
   const [rounds, setRounds] = useStickyState([], "rounds");
 
   const [newScores, setNewScores] = useStickyState(
