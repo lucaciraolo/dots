@@ -119,6 +119,12 @@ export default function App() {
                               }
                             }
                           }}
+                          inputProps={{
+                            style: {
+                              "-moz-appearance": "textfield",
+                              "-webkit-appearance": "textfield",
+                            },
+                          }}
                           {...(index === 0 && { autoFocus: true })}
                         />
                       </TableCell>
