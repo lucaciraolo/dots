@@ -65,12 +65,11 @@ export default function App() {
       <Grid container direction="column" justify="space-between">
         <Grid item>
           <TableContainer component={Paper}>
-            <Table aria-label="simple table">
+            <Table aria-label="simple table" size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell>Round</TableCell>
                   {players.map((name) => (
-                    <TableCell>{name}</TableCell>
+                    <TableCell padding="none">{name}</TableCell>
                   ))}
                 </TableRow>
               </TableHead>
@@ -79,13 +78,16 @@ export default function App() {
                   const worstScore = Math.max(...round);
                   return (
                     <TableRow key={roundNumber}>
-                      <TableCell>#{roundNumber + 1}</TableCell>
                       {round.map((score) => {
                         const style = {};
                         if (score === worstScore) {
                           style["color"] = "red";
                         }
-                        return <TableCell style={style}>{score}</TableCell>;
+                        return (
+                          <TableCell padding="none" style={style}>
+                            {score}
+                          </TableCell>
+                        );
                       })}
                     </TableRow>
                   );
@@ -93,23 +95,10 @@ export default function App() {
 
                 {scoreEntry && (
                   <TableRow>
-                    <TableCell>
-                      <IconButton
-                        style={{ color: "green" }}
-                        onClick={() => {
-                          if (!newScores.includes(null)) {
-                            setRounds([...rounds, newScores]);
-                            setNewScores(players.map((name) => null));
-                            setScoreEntry(false);
-                          }
-                        }}
-                      >
-                        <SaveIcon />
-                      </IconButton>
-                    </TableCell>
                     {newScores.map((score, index) => (
-                      <TableCell>
+                      <TableCell padding="none">
                         <TextField
+                          className={`score-input-${index}`}
                           style={{ maxWidth: "3rem" }}
                           value={score}
                           type="number"
@@ -118,7 +107,19 @@ export default function App() {
                             newNewScores[index] = parseInt(e.target.value);
                             setNewScores(newNewScores);
                           }}
-                          inputProps={index == 0 ? { autoFocus: true } : {}}
+                          onKeyPress={(event) => {
+                            console.log(`Pressed keyCode ${event.key}`);
+                            if (event.key === "Enter") {
+                              if (index !== players.length - 1) {
+                                document
+                                  .querySelector(
+                                    `.score-input-${index + 1} input`
+                                  )
+                                  .focus();
+                              }
+                            }
+                          }}
+                          {...(index === 0 && { autoFocus: true })}
                         />
                       </TableCell>
                     ))}
@@ -126,9 +127,8 @@ export default function App() {
                 )}
                 {rounds.length > 0 && (
                   <TableRow style={{ borderTop: "3px double black" }}>
-                    <TableCell style={{ fontWeight: "bold" }}>Totals</TableCell>
                     {totals.map((score) => (
-                      <TableCell style={{ fontWeight: "bold" }}>
+                      <TableCell padding="none" style={{ fontWeight: "bold" }}>
                         {score}
                       </TableCell>
                     ))}
@@ -152,6 +152,22 @@ export default function App() {
             </Fab>
           </Grid>
           <Grid item>
+            {scoreEntry && (
+              <Fab
+                color={"primary"}
+                size="medium"
+                style={{ marginTop: 20, marginRight: 10 }}
+                onClick={() => {
+                  if (!newScores.includes(null)) {
+                    setRounds([...rounds, newScores]);
+                    setNewScores(players.map((name) => null));
+                    setScoreEntry(false);
+                  }
+                }}
+              >
+                <SaveIcon />
+              </Fab>
+            )}
             <Fab
               color={scoreEntry ? "secondary" : "primary"}
               size="medium"
