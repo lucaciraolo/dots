@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import AddIcon from "@mui/icons-material/Add";
 import {
+  Box,
   Button,
   Fab,
   Grid,
@@ -23,8 +24,8 @@ import { ConfirmDialog } from "./ConfirmDialog";
 
 export default function App() {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-  const [players, setPlayers] = useStickyState(
-    ["Hugo", "Luca", "Cyrus", "Henry"],
+  const [players, setPlayers] = useState(
+    ["Hugo", "Luca", "Cyrus", "Henry", "Henry", "Henry"],
     "players"
   );
   const [rounds, setRounds] = useStickyState([], "rounds");
@@ -50,16 +51,24 @@ export default function App() {
     return () => {};
   }, [rounds]);
 
+  // const tableCellPadding = "none";
+  const tableCellPadding = "normal";
+
   return (
     <>
-      <Grid container direction="column" padding={1}>
-        <Grid item style={{ maxWidth: "100%", overflowX: "scroll" }}>
+      <Container>
+        <Box style={{ maxWidth: "100%", overflowX: "auto" }}>
           <TableContainer>
-            <Table aria-label="simple table" size="small">
+            <Table
+              aria-label="simple table"
+              size="small"
+              style={{ align: "center" }}
+              padding={tableCellPadding}
+            >
               <TableHead>
                 <TableRow>
                   {players.map((name) => (
-                    <TableCell padding="none">{name}</TableCell>
+                    <TableCell align="center">{name}</TableCell>
                   ))}
                 </TableRow>
               </TableHead>
@@ -74,7 +83,7 @@ export default function App() {
                           style["color"] = "red";
                         }
                         return (
-                          <TableCell padding="none" style={style}>
+                          <TableCell align="center" style={style}>
                             {score}
                           </TableCell>
                         );
@@ -86,7 +95,7 @@ export default function App() {
                 {scoreEntry && (
                   <TableRow>
                     {newScores.map((score, index) => (
-                      <TableCell padding="none">
+                      <TableCell align="center">
                         <TextField
                           variant="standard"
                           className={`score-input-${index}`}
@@ -125,7 +134,7 @@ export default function App() {
                     style={{ borderTop: "3px double rgba(81, 81, 81, 1)" }}
                   >
                     {totals.map((score) => (
-                      <TableCell padding="none" style={{ fontWeight: "bold" }}>
+                      <TableCell align="center" style={{ fontWeight: "bold" }}>
                         {score}
                       </TableCell>
                     ))}
@@ -134,8 +143,9 @@ export default function App() {
               </TableBody>
             </Table>
           </TableContainer>
-        </Grid>
-      </Grid>
+        </Box>
+      </Container>
+
       <Grid
         container
         justifyContent="space-between"
@@ -196,7 +206,7 @@ export default function App() {
           </Fab>
         </Grid>
       </Grid>
-      {/* <ConfirmDialog
+      <ConfirmDialog
         open={confirmDialogOpen}
         setOpen={setConfirmDialogOpen}
         confirmHandler={() => {
@@ -205,7 +215,7 @@ export default function App() {
           setNewScores(players.map((name) => null));
           setConfirmDialogOpen(false);
         }}
-      /> */}
+      />
     </>
   );
 }
