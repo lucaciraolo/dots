@@ -108,7 +108,6 @@ export default function App() {
                             setNewScores(newNewScores);
                           }}
                           onKeyPress={(event) => {
-                            console.log(`Pressed keyCode ${event.key}`);
                             if (event.key === "Enter") {
                               if (index !== players.length - 1) {
                                 document
