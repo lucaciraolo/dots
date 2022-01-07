@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Container from "@material-ui/core/Container";
-import AddIcon from "@material-ui/icons/Add";
+import Container from "@mui/material/Container";
+import AddIcon from "@mui/icons-material/Add";
 import {
   Button,
   Fab,
@@ -14,10 +14,10 @@ import {
   TableHead,
   TableRow,
   TextField,
-} from "@material-ui/core";
-import SaveIcon from "@material-ui/icons/Save";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import ClearIcon from "@material-ui/icons/Clear";
+} from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import ClearIcon from "@mui/icons-material/Clear";
 import { useStickyState } from "./hooks/useStickyState";
 import { ConfirmDialog } from "./ConfirmDialog";
 
@@ -62,7 +62,7 @@ export default function App() {
           setConfirmDialogOpen(false);
         }}
       />
-      <Grid container direction="column" justify="space-between">
+      <Grid container direction="column" justifyContent="space-between">
         <Grid item>
           <TableContainer component={Paper}>
             <Table aria-label="simple table" size="small">
@@ -143,7 +143,7 @@ export default function App() {
             </Table>
           </TableContainer>
         </Grid>
-        <Grid item container justify="space-between">
+        <Grid item container justifyContent="space-between">
           <Grid item>
             <Fab
               color={"secondary"}
