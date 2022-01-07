@@ -27,7 +27,7 @@ import { PlayersDialog } from "./PlayersDialog";
 export default function App() {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [playersDialogOpen, setPlayersDialogOpen] = useState(false);
-  const [players, setPlayers] = useState(
+  const [players, setPlayers] = useStickyState(
     ["Hugo", "Luca", "Cyrus", "Henry"],
     "players"
   );
