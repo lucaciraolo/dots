@@ -21,9 +21,12 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useStickyState } from "./hooks/useStickyState";
 import { ConfirmDialog } from "./ConfirmDialog";
+import Person from "@mui/icons-material/Person";
+import { PlayersDialog } from "./PlayersDialog";
 
 export default function App() {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [playersDialogOpen, setPlayersDialogOpen] = useState(false);
   const [players, setPlayers] = useState(
     ["Hugo", "Luca", "Cyrus", "Henry"],
     "players"
@@ -60,7 +63,6 @@ export default function App() {
         style={{ height: "80vh", overflowX: "auto" }}
         maxWidth={maxWidth}
       >
-        {/* <TableContainer> */}
         <Table
           aria-label="simple table"
           size="small"
@@ -140,7 +142,6 @@ export default function App() {
             )}
           </TableBody>
         </Table>
-        {/* </TableContainer> */}
       </Container>
 
       <Grid
@@ -149,17 +150,6 @@ export default function App() {
         padding={1}
         style={{ bottom: 0, position: "absolute" }}
       >
-        <Grid item>
-          <Fab
-            color={"default"}
-            size="medium"
-            onClick={() => {
-              setConfirmDialogOpen(true);
-            }}
-          >
-            <DeleteForeverIcon />
-          </Fab>
-        </Grid>
         <Grid item>
           <Fab
             color={"secondary"}
@@ -172,6 +162,31 @@ export default function App() {
           </Fab>
         </Grid>
         <Grid item>
+          <Fab
+            color={"default"}
+            size="medium"
+            onClick={() => {
+              setPlayersDialogOpen(true);
+            }}
+          >
+            <Person />
+          </Fab>
+        </Grid>
+        <Grid item>
+          <Fab
+            color={scoreEntry ? "secondary" : "primary"}
+            size="medium"
+            onClick={() => {
+              if (!scoreEntry) {
+                setScoreEntry(true);
+              } else {
+                setNewScores(players.map((name) => null));
+                setScoreEntry(false);
+              }
+            }}
+          >
+            {scoreEntry ? <ClearIcon /> : <AddIcon />}
+          </Fab>
           {scoreEntry && (
             <Fab
               color={"primary"}
@@ -187,22 +202,9 @@ export default function App() {
               <SaveIcon />
             </Fab>
           )}
-          <Fab
-            color={scoreEntry ? "secondary" : "primary"}
-            size="medium"
-            onClick={() => {
-              if (!scoreEntry) {
-                setScoreEntry(true);
-              } else {
-                setNewScores(players.map((name) => null));
-                setScoreEntry(false);
-              }
-            }}
-          >
-            {scoreEntry ? <ClearIcon /> : <AddIcon />}
-          </Fab>
         </Grid>
       </Grid>
+
       <ConfirmDialog
         open={confirmDialogOpen}
         setOpen={setConfirmDialogOpen}
@@ -211,6 +213,19 @@ export default function App() {
           setScoreEntry(false);
           setNewScores(players.map((name) => null));
           setConfirmDialogOpen(false);
+        }}
+      />
+
+      <PlayersDialog
+        open={playersDialogOpen}
+        setOpen={setPlayersDialogOpen}
+        players={players}
+        savePlayers={(newPlayers) => {
+          setRounds([]);
+          setScoreEntry(false);
+          setNewScores(newPlayers.map((name) => null));
+          setPlayers(newPlayers);
+          setPlayersDialogOpen(false);
         }}
       />
     </>
