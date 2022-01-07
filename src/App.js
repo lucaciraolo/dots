@@ -51,20 +51,10 @@ export default function App() {
   }, [rounds]);
 
   return (
-    <Container maxWidth="sm">
-      <ConfirmDialog
-        open={confirmDialogOpen}
-        setOpen={setConfirmDialogOpen}
-        confirmHandler={() => {
-          setRounds([]);
-          setScoreEntry(false);
-          setNewScores(players.map((name) => null));
-          setConfirmDialogOpen(false);
-        }}
-      />
-      <Grid container direction="column" justifyContent="space-between">
-        <Grid item>
-          <TableContainer component={Paper}>
+    <>
+      <Grid container direction="column" padding={1}>
+        <Grid item style={{ maxWidth: "100%", overflowX: "scroll" }}>
+          <TableContainer>
             <Table aria-label="simple table" size="small">
               <TableHead>
                 <TableRow>
@@ -98,6 +88,7 @@ export default function App() {
                     {newScores.map((score, index) => (
                       <TableCell padding="none">
                         <TextField
+                          variant="standard"
                           className={`score-input-${index}`}
                           style={{ maxWidth: "3rem" }}
                           value={score}
@@ -120,8 +111,7 @@ export default function App() {
                           }}
                           inputProps={{
                             style: {
-                              "-moz-appearance": "textfield",
-                              "-webkit-appearance": "textfield",
+                              appearance: "textfield",
                             },
                           }}
                           {...(index === 0 && { autoFocus: true })}
@@ -131,7 +121,9 @@ export default function App() {
                   </TableRow>
                 )}
                 {rounds.length > 0 && (
-                  <TableRow style={{ borderTop: "3px double black" }}>
+                  <TableRow
+                    style={{ borderTop: "3px double rgba(81, 81, 81, 1)" }}
+                  >
                     {totals.map((score) => (
                       <TableCell padding="none" style={{ fontWeight: "bold" }}>
                         {score}
@@ -143,54 +135,77 @@ export default function App() {
             </Table>
           </TableContainer>
         </Grid>
-        <Grid item container justifyContent="space-between">
-          <Grid item>
+      </Grid>
+      <Grid
+        container
+        justifyContent="space-between"
+        padding={1}
+        style={{ bottom: 0, position: "absolute" }}
+      >
+        <Grid item>
+          <Fab
+            color={"default"}
+            size="medium"
+            onClick={() => {
+              setConfirmDialogOpen(true);
+            }}
+          >
+            <DeleteForeverIcon />
+          </Fab>
+        </Grid>
+        <Grid item>
+          <Fab
+            color={"secondary"}
+            size="medium"
+            onClick={() => {
+              setConfirmDialogOpen(true);
+            }}
+          >
+            <DeleteForeverIcon />
+          </Fab>
+        </Grid>
+        <Grid item>
+          {scoreEntry && (
             <Fab
-              color={"secondary"}
+              color={"primary"}
               size="medium"
-              style={{ marginTop: 20 }}
               onClick={() => {
-                setConfirmDialogOpen(true);
-              }}
-            >
-              <DeleteForeverIcon />
-            </Fab>
-          </Grid>
-          <Grid item>
-            {scoreEntry && (
-              <Fab
-                color={"primary"}
-                size="medium"
-                style={{ marginTop: 20, marginRight: 10 }}
-                onClick={() => {
-                  if (!newScores.includes(null)) {
-                    setRounds([...rounds, newScores]);
-                    setNewScores(players.map((name) => null));
-                    setScoreEntry(false);
-                  }
-                }}
-              >
-                <SaveIcon />
-              </Fab>
-            )}
-            <Fab
-              color={scoreEntry ? "secondary" : "primary"}
-              size="medium"
-              style={{ marginTop: 20 }}
-              onClick={() => {
-                if (!scoreEntry) {
-                  setScoreEntry(true);
-                } else {
+                if (!newScores.includes(null)) {
+                  setRounds([...rounds, newScores]);
                   setNewScores(players.map((name) => null));
                   setScoreEntry(false);
                 }
               }}
             >
-              {scoreEntry ? <ClearIcon /> : <AddIcon />}
+              <SaveIcon />
             </Fab>
-          </Grid>
+          )}
+          <Fab
+            color={scoreEntry ? "secondary" : "primary"}
+            size="medium"
+            onClick={() => {
+              if (!scoreEntry) {
+                setScoreEntry(true);
+              } else {
+                setNewScores(players.map((name) => null));
+                setScoreEntry(false);
+              }
+            }}
+          >
+            {scoreEntry ? <ClearIcon /> : <AddIcon />}
+          </Fab>
         </Grid>
       </Grid>
-    </Container>
+      {/* <ConfirmDialog
+        open={confirmDialogOpen}
+        setOpen={setConfirmDialogOpen}
+        confirmHandler={() => {
+          setRounds([]);
+          setScoreEntry(false);
+          setNewScores(players.map((name) => null));
+          setConfirmDialogOpen(false);
+        }}
+      /> */}
+    </>
   );
 }
