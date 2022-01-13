@@ -23,6 +23,7 @@ import { useStickyState } from "./hooks/useStickyState";
 import { ConfirmDialog } from "./ConfirmDialog";
 import Person from "@mui/icons-material/Person";
 import { PlayersDialog } from "./PlayersDialog";
+import "./App.css";
 
 export default function App() {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -64,24 +65,26 @@ export default function App() {
   };
 
   const tableCellPadding = players.length > 4 ? "none" : "normal";
-  const maxWidth = players.length > 6 ? "sm" : "xs";
+  const maxWidth = players.length > 6 ? "lg" : "md";
 
   return (
     <>
       <Container
         style={{ height: "80vh", overflowX: "auto" }}
-        maxWidth={maxWidth}
+        // maxWidth={maxWidth}
       >
         <Table
           aria-label="simple table"
           size="small"
-          style={{ align: "center" }}
+          style={{ align: "center", fontSize: "2rem" }}
           padding={tableCellPadding}
         >
           <TableHead>
             <TableRow>
               {players.map((name) => (
-                <TableCell align="center">{name}</TableCell>
+                <TableCell align="center" className="table-cell">
+                  {name}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -96,7 +99,11 @@ export default function App() {
                       style["color"] = "red";
                     }
                     return (
-                      <TableCell align="center" style={style}>
+                      <TableCell
+                        align="center"
+                        style={style}
+                        className="table-cell"
+                      >
                         {score}
                       </TableCell>
                     );
@@ -108,7 +115,7 @@ export default function App() {
             {scoreEntry && (
               <TableRow>
                 {newScores.map((score, index) => (
-                  <TableCell align="center">
+                  <TableCell align="center" className="table-cell">
                     <TextField
                       variant="standard"
                       className={`score-input-${index}`}
@@ -145,7 +152,11 @@ export default function App() {
             {rounds.length > 0 && (
               <TableRow style={{ borderTop: "3px double rgba(81, 81, 81, 1)" }}>
                 {totals.map((score) => (
-                  <TableCell align="center" style={{ fontWeight: "bold" }}>
+                  <TableCell
+                    align="center"
+                    style={{ fontWeight: "bold" }}
+                    className="table-cell"
+                  >
                     {score}
                   </TableCell>
                 ))}
@@ -164,7 +175,7 @@ export default function App() {
         <Grid item>
           <Fab
             color={"secondary"}
-            size="medium"
+            size="large"
             onClick={() => {
               setConfirmDialogOpen(true);
             }}
@@ -175,7 +186,7 @@ export default function App() {
         <Grid item>
           <Fab
             color={"default"}
-            size="medium"
+            size="large"
             onClick={() => {
               setPlayersDialogOpen(true);
             }}
@@ -186,7 +197,7 @@ export default function App() {
         <Grid item>
           <Fab
             color={scoreEntry ? "secondary" : "primary"}
-            size="medium"
+            size="large"
             onClick={() => {
               if (!scoreEntry) {
                 setScoreEntry(true);
@@ -199,7 +210,7 @@ export default function App() {
             {scoreEntry ? <ClearIcon /> : <AddIcon />}
           </Fab>
           {scoreEntry && (
-            <Fab color={"primary"} size="medium" onClick={saveNewScores}>
+            <Fab color={"primary"} size="large" onClick={saveNewScores}>
               <SaveIcon />
             </Fab>
           )}
