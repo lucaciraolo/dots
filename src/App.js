@@ -43,6 +43,7 @@ export default function App() {
     players.map((name) => 0),
     "totals"
   );
+
   useEffect(() => {
     const sums = players.map((name) => 0);
     rounds.forEach((round) => {
@@ -53,6 +54,14 @@ export default function App() {
     setTotals(sums);
     return () => {};
   }, [rounds]);
+
+  const saveNewScores = () => {
+    if (!newScores.includes(null)) {
+      setRounds([...rounds, newScores]);
+      setNewScores(players.map((name) => null));
+      setScoreEntry(false);
+    }
+  };
 
   const tableCellPadding = players.length > 4 ? "none" : "normal";
   const maxWidth = players.length > 6 ? "sm" : "xs";
@@ -117,6 +126,8 @@ export default function App() {
                             document
                               .querySelector(`.score-input-${index + 1} input`)
                               .focus();
+                          } else {
+                            saveNewScores();
                           }
                         }
                       }}
@@ -188,17 +199,7 @@ export default function App() {
             {scoreEntry ? <ClearIcon /> : <AddIcon />}
           </Fab>
           {scoreEntry && (
-            <Fab
-              color={"primary"}
-              size="medium"
-              onClick={() => {
-                if (!newScores.includes(null)) {
-                  setRounds([...rounds, newScores]);
-                  setNewScores(players.map((name) => null));
-                  setScoreEntry(false);
-                }
-              }}
-            >
+            <Fab color={"primary"} size="medium" onClick={saveNewScores}>
               <SaveIcon />
             </Fab>
           )}
