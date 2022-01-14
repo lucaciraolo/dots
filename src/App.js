@@ -57,7 +57,6 @@ export default function App() {
       });
     });
     setTotals(sums);
-    return () => {};
   }, [rounds]);
 
   useEffect(() => {
@@ -68,8 +67,12 @@ export default function App() {
       newRounds.at(-1)[index] -= 50;
       setRounds(newRounds);
     }
-    return () => {};
   }, [totals]);
+
+  // useEffect(() => {
+  //   //sort rounds and players by totals
+  //   rounds;
+  // }, [totals]);
 
   const saveNewScores = () => {
     if (!newScores.includes(null)) {
