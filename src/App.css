@@ -2,3 +2,13 @@
   font-size: 5vmin;
   line-height: inherit;
 }
+
+.scaling-button {
+  width: 15vmin;
+  height: 15vmin;
+  font-size: 8vmin;
+}
+
+.MuiSvgIcon-root {
+  font-size: inherit;
+}

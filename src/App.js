@@ -119,7 +119,6 @@ export default function App() {
                     <TextField
                       variant="standard"
                       className={`score-input-${index}`}
-                      style={{ maxWidth: "3rem" }}
                       value={score}
                       type="number"
                       onChange={(e) => {
@@ -141,6 +140,9 @@ export default function App() {
                       inputProps={{
                         style: {
                           appearance: "textfield",
+                          fontSize: "5vmin",
+                          maxWidth: "10vmin",
+                          height: "inherit",
                         },
                       }}
                       {...(index === 0 && { autoFocus: true })}
@@ -175,7 +177,7 @@ export default function App() {
         <Grid item>
           <Fab
             color={"secondary"}
-            size="large"
+            className="scaling-button"
             onClick={() => {
               setConfirmDialogOpen(true);
             }}
@@ -186,7 +188,7 @@ export default function App() {
         <Grid item>
           <Fab
             color={"default"}
-            size="large"
+            className="scaling-button"
             onClick={() => {
               setPlayersDialogOpen(true);
             }}
@@ -197,7 +199,7 @@ export default function App() {
         <Grid item>
           <Fab
             color={scoreEntry ? "secondary" : "primary"}
-            size="large"
+            className="scaling-button"
             onClick={() => {
               if (!scoreEntry) {
                 setScoreEntry(true);
@@ -210,7 +212,11 @@ export default function App() {
             {scoreEntry ? <ClearIcon /> : <AddIcon />}
           </Fab>
           {scoreEntry && (
-            <Fab color={"primary"} size="large" onClick={saveNewScores}>
+            <Fab
+              color={"primary"}
+              className="scaling-button"
+              onClick={saveNewScores}
+            >
               <SaveIcon />
             </Fab>
           )}
