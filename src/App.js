@@ -40,13 +40,17 @@ export default function App() {
   );
   const [scoreEntry, setScoreEntry] = useStickyState(false, "scoreEntry");
 
-  const [totals, setTotals] = useStickyState(
-    players.map((name) => 0),
-    "totals"
-  );
+  const [totals, setTotals] = useState([]);
 
   useEffect(() => {
-    const sums = players.map((name) => 0);
+    setRounds([]);
+    setNewScores(players.map(() => null));
+    setTotals(players.map(() => 0));
+  }, [players]);
+
+  // update totals when rounds change
+  useEffect(() => {
+    const sums = players.map(() => 0);
     rounds.forEach((round) => {
       round.forEach((score, index) => {
         sums[index] += score;
@@ -56,10 +60,21 @@ export default function App() {
     return () => {};
   }, [rounds]);
 
+  useEffect(() => {
+    if (totals.includes(100)) {
+      // add -50 to their last round score
+      const index = totals.indexOf(100);
+      const newRounds = JSON.parse(JSON.stringify(rounds));
+      newRounds.at(-1)[index] -= 50;
+      setRounds(newRounds);
+    }
+    return () => {};
+  }, [totals]);
+
   const saveNewScores = () => {
     if (!newScores.includes(null)) {
       setRounds([...rounds, newScores]);
-      setNewScores(players.map((name) => null));
+      setNewScores(players.map(() => null));
       setScoreEntry(false);
     }
   };
